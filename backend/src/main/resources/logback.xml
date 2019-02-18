@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>
+                %d{dd-MM-yyyy HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %logger.%M - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="SYSLOG" class="com.papertrailapp.logback.Syslog4jAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %logger{36}.%M - %msg%n</pattern>
+        </layout>
+
+        <syslogConfig class="org.productivity.java.syslog4j.impl.net.tcp.ssl.SSLTCPNetSyslogConfig">
+            <host>logs6.papertrailapp.com</host>
+            <port>18436</port>
+            <ident>IOTBACKEND</ident>
+            <maxMessageLength>128000</maxMessageLength>
+        </syslogConfig>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="SYSLOG"/>
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+</configuration>
