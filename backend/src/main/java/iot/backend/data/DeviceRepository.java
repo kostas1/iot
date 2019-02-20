@@ -6,5 +6,5 @@ import java.util.Optional;
 
 public interface DeviceRepository extends CrudRepository<Device, Long> {
 
-    Optional<Device> findByDeviceIdentifier(String deviceIdentifier);
+    Optional<Device> findByIdentifier(String identifier);
 }
