@@ -22,14 +22,15 @@ public class DeviceService {
     @Autowired
     DeviceRepository deviceRepository;
 
-    public String exchange(String id, String data) {
-        logger.info("{}, {}", id, data);
-        Optional<Device> optionalDevice = deviceRepository.findByIdentifier(id);
+    public String exchange(String identifier, String status) {
+//        logger.info("{}, {}", identifier, status);
+        Optional<Device> optionalDevice = deviceRepository.findByIdentifier(identifier);
         if (optionalDevice.isPresent()) {
             Device device = optionalDevice.get();
-            deviceDataRepository.save(new DeviceData(device.getId(), data));
+            deviceDataRepository.save(new DeviceData(device.getId(), status));
             try {
-                device.setStatus(processData(device, data));
+                device.setStatus(processData(device, status));
+                deviceRepository.save(device);
                 return device.getStatus();
             } catch (Exception e) {
                 logger.error("Error processing data: {}", e.getMessage());
@@ -40,19 +41,19 @@ public class DeviceService {
         }
     }
 
-    private String processData(Device device, String data) throws Exception {
-        DeviceManager manager = identifyManager(device.getType());
-        String newStatus = manager.process(device.getStatus(), data);
-        logger.info("Processed for device '{}' data '{}', last status '{}', new status '{}'", device.getIdentifier(), data, device.getStatus(), newStatus);
+    private String processData(Device device, String status) throws Exception {
+        DeviceManager manager = identifyManager(device);
+        String newStatus = manager.process(status);
+//        logger.info("Processed for device '{}' status '{}', last status '{}', new status '{}'", device.getIdentifier(), status, device.getStatus(), newStatus);
         return newStatus;
     }
 
-    private DeviceManager identifyManager(DeviceType type) throws Exception {
-        switch (type) {
+    private DeviceManager identifyManager(Device device) throws Exception {
+        switch (device.getType()) {
             case FermentationMonitor:
-                return new FermentationMonitorManager();
+                return new FermentationMonitorManager(device);
             default:
-                throw new Exception("Cannot identify DeviceManager for type " + type.name());
+                throw new Exception("Cannot identify DeviceManager for type " + device.getType().name());
         }
     }
 }

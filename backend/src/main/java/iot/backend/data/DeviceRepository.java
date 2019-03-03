@@ -7,4 +7,6 @@ import java.util.Optional;
 public interface DeviceRepository extends CrudRepository<Device, Long> {
 
     Optional<Device> findByIdentifier(String identifier);
+
+    Iterable<Device> findByType(DeviceType type);
 }

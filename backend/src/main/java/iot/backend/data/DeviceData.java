@@ -8,23 +8,23 @@ public class DeviceData {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private long id;
 
     @Column
-    private Long deviceId;
+    private long deviceId;
 
     @Column
-    private String data;
+    private String status;
 
     @Column
-    private Date received;
+    private long received;
 
     public DeviceData() {
     }
 
-    public DeviceData(Long deviceId, String data) {
+    public DeviceData(Long deviceId, String status) {
         this.deviceId = deviceId;
-        this.data = data;
-        this.received = new Date();
+        this.status = status;
+        this.received = new Date().getTime();
     }
 }

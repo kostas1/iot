@@ -16,6 +16,6 @@ public class DatabaseInitializer {
 
     @EventListener
     public void seedDatabase(ContextRefreshedEvent event) {
-        deviceRepository.save(new Device("1", "1:1", DeviceType.FermentationMonitor));
+//        deviceRepository.save(new Device("1", "1:1", DeviceType.FermentationMonitor));
     }
 }

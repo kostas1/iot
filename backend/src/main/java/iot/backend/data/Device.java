@@ -47,4 +47,15 @@ public class Device {
     public String getIdentifier() {
         return identifier;
     }
+
+    public void setStatusParameter(int index, String value) {
+        // TODO put split regex into configs and consider splitting in constructor/setStatus for faster operations
+        String[] split = this.status.split(":");
+        split[index] = value;
+        this.status = String.join(":", split);
+    }
+
+    public String getStatusParameter(int index) {
+        return this.status.split(":")[index]; // TODO put split regex into configs and consider splitting in constructor/setStatus for faster operations
+    }
 }
